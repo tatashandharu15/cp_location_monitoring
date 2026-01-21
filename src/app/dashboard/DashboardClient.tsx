@@ -61,19 +61,19 @@ export default function DashboardClient() {
         <h1 className="text-2xl font-bold text-slate-100">Dashboard Overview</h1>
         
         <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full md:w-auto">
             <input 
               type="date" 
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+              className="flex-1 md:flex-none bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
             />
             <span className="text-slate-500">-</span>
             <input 
               type="date" 
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+              className="flex-1 md:flex-none bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
             />
           </div>
 
@@ -91,7 +91,7 @@ export default function DashboardClient() {
           )}
           <button 
             onClick={fetchData} 
-            className="p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 hover:bg-slate-700"
+            className="w-full md:w-auto flex justify-center p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 hover:bg-slate-700"
             title="Refresh Data"
           >
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
@@ -100,53 +100,53 @@ export default function DashboardClient() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-          <div className="flex justify-between items-start">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-slate-800 p-4 md:p-6 rounded-xl border border-slate-700 shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
-              <p className="text-sm font-medium text-slate-400">Total Requests</p>
-              <h3 className="text-3xl font-bold text-slate-100 mt-2">{loading ? '...' : stats?.total_req}</h3>
+              <p className="text-xs md:text-sm font-medium text-slate-400">Total Requests</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-100 mt-1 md:mt-2">{loading ? '...' : stats?.total_req}</h3>
             </div>
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Activity className="text-blue-500" size={24} />
+            <div className="p-2 bg-blue-500/10 rounded-lg self-end md:self-start">
+              <Activity className="text-blue-500" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-          <div className="flex justify-between items-start">
+        <div className="bg-slate-800 p-4 md:p-6 rounded-xl border border-slate-700 shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
-              <p className="text-sm font-medium text-slate-400">Today's Requests</p>
-              <h3 className="text-3xl font-bold text-slate-100 mt-2">{loading ? '...' : stats?.today_req}</h3>
+              <p className="text-xs md:text-sm font-medium text-slate-400">Today's Requests</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-100 mt-1 md:mt-2">{loading ? '...' : stats?.today_req}</h3>
             </div>
-            <div className="p-2 bg-green-500/10 rounded-lg">
-              <Clock className="text-green-500" size={24} />
+            <div className="p-2 bg-green-500/10 rounded-lg self-end md:self-start">
+              <Clock className="text-green-500" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-          <div className="flex justify-between items-start">
+        <div className="bg-slate-800 p-4 md:p-6 rounded-xl border border-slate-700 shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
-              <p className="text-sm font-medium text-slate-400">Unique Numbers</p>
-              <h3 className="text-3xl font-bold text-slate-100 mt-2">{loading ? '...' : stats?.total_numbers}</h3>
+              <p className="text-xs md:text-sm font-medium text-slate-400">Unique Numbers</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-100 mt-1 md:mt-2">{loading ? '...' : stats?.total_numbers}</h3>
             </div>
-            <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Phone className="text-purple-500" size={24} />
+            <div className="p-2 bg-purple-500/10 rounded-lg self-end md:self-start">
+              <Phone className="text-purple-500" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-          <div className="flex justify-between items-start">
+        <div className="bg-slate-800 p-4 md:p-6 rounded-xl border border-slate-700 shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
-              <p className="text-sm font-medium text-slate-400">Avg Response Time</p>
-              <h3 className="text-3xl font-bold text-slate-100 mt-2">
+              <p className="text-xs md:text-sm font-medium text-slate-400">Avg Response Time</p>
+              <h3 className="text-xl md:text-3xl font-bold text-slate-100 mt-1 md:mt-2">
                 {loading ? '...' : formatDuration(stats?.avg_time)}
               </h3>
             </div>
-            <div className="p-2 bg-orange-500/10 rounded-lg">
-              <Loader2 className="text-orange-500" size={24} />
+            <div className="p-2 bg-orange-500/10 rounded-lg self-end md:self-start">
+              <Loader2 className="text-orange-500" size={20} />
             </div>
           </div>
         </div>

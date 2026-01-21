@@ -281,9 +281,9 @@ export default function NumbersClient() {
               </div>
 
               {/* Charts & Map */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[400px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Pie Chart */}
-                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col">
+                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col h-[300px] md:h-[400px]">
                   <h4 className="text-sm font-medium text-slate-300 mb-4">Status Distribution</h4>
                   <div className="flex-1 min-h-0">
                     {chartData.length > 0 ? (
@@ -318,7 +318,7 @@ export default function NumbersClient() {
                 </div>
 
                 {/* Map */}
-                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col">
+                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col h-[300px] md:h-[400px]">
                   <h4 className="text-sm font-medium text-slate-300 mb-4">Location History ({locations.length})</h4>
                   <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-slate-600">
                     <MapComponent locations={locations} highlightedJobId={highlightedJobId} />

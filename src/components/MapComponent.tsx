@@ -65,7 +65,7 @@ export default function MapComponent({ locations, highlightedPhone, highlightedJ
       />
       <MapController highlightedLocation={highlightedLocation} />
       {locations.map((loc, idx) => {
-        const isHighlighted = loc.jobId === highlightedJobId || loc.phone === highlightedPhone;
+        const isHighlighted = (highlightedJobId && loc.jobId === highlightedJobId) || (highlightedPhone && loc.phone === highlightedPhone);
         return (
           <Marker 
             key={idx} 
