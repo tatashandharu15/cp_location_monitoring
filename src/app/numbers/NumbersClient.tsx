@@ -7,10 +7,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, L
 
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
-  loading: () => <div className="h-full w-full flex items-center justify-center bg-slate-800 text-slate-400">Loading Map...</div>
+  loading: () => <div className="h-full w-full flex items-center justify-center bg-slate-900 text-slate-500">Loading Map...</div>
 });
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 type NumberAgg = {
   phone: string;
@@ -165,16 +165,21 @@ export default function NumbersClient() {
   return (
     <div className="space-y-6">
       {/* Header & Filter */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h1 className="text-2xl font-bold text-slate-100">Numbers Intel</h1>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Numbers Intel</h1>
+          <p className="text-slate-400 text-sm mt-1">Analyze activity by phone numbers</p>
+        </div>
         
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={16} />
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full md:w-48">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+              <Filter size={16} />
+            </div>
             <select 
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
-              className="pl-9 pr-4 py-2.5 bg-slate-800 border border-slate-700 text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-48"
+              className="bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 appearance-none"
             >
               <option value="">All Users</option>
               {users.map((u: string) => (
@@ -184,7 +189,7 @@ export default function NumbersClient() {
           </div>
           <button 
             onClick={fetchData} 
-            className="p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 hover:bg-slate-700"
+            className="flex items-center justify-center p-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg shadow-blue-500/20"
             title="Refresh Data"
           >
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
@@ -193,28 +198,28 @@ export default function NumbersClient() {
       </div>
 
       {/* Table */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-sm overflow-hidden">
+      <div className="bg-slate-900 rounded-xl border border-slate-800 shadow-lg shadow-slate-900/50 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-slate-400">
-            <thead className="text-xs text-slate-400 uppercase bg-slate-900/50">
+            <thead className="text-xs text-slate-500 uppercase bg-slate-950/50 border-b border-slate-800">
               <tr>
-                <th className="px-6 py-4">Phone</th>
-                <th className="px-6 py-4">Total Requests</th>
-                <th className="px-6 py-4">Last Seen</th>
-                <th className="px-6 py-4">Action</th>
+                <th className="px-6 py-4 font-medium">Phone</th>
+                <th className="px-6 py-4 font-medium">Total Requests</th>
+                <th className="px-6 py-4 font-medium">Last Seen</th>
+                <th className="px-6 py-4 font-medium">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-800">
               {loading ? (
-                <tr><td colSpan={4} className="text-center py-8">Loading...</td></tr>
+                <tr><td colSpan={4} className="text-center py-8 text-slate-500">Loading data...</td></tr>
               ) : items.length === 0 ? (
-                <tr><td colSpan={4} className="text-center py-8">No numbers found</td></tr>
+                <tr><td colSpan={4} className="text-center py-8 text-slate-500">No numbers found</td></tr>
               ) : (
                 items.map((item) => (
-                  <tr key={item.phone} className="border-b border-slate-700 hover:bg-slate-700/50">
+                  <tr key={item.phone} className="hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4 font-mono text-slate-300">{item.phone}</td>
                     <td className="px-6 py-4 text-slate-300">
-                      <span className="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded text-xs font-medium">
                         {item.total}
                       </span>
                     </td>
@@ -224,9 +229,10 @@ export default function NumbersClient() {
                     <td className="px-6 py-4 text-slate-300">
                       <button
                         onClick={() => fetchPhoneJobs(item.phone)}
-                        className="px-3 py-1.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded-lg text-xs font-medium transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium transition-colors border border-slate-700"
                       >
-                        Detail
+                        <Eye size={14} />
+                        Details
                       </button>
                     </td>
                   </tr>
@@ -239,43 +245,46 @@ export default function NumbersClient() {
 
       {/* Phone Details Modal */}
       {selectedPhone && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900/50">
-              <h3 className="font-semibold text-slate-100">Details for {selectedPhone}</h3>
-              <button onClick={() => setSelectedPhone(null)} className="text-slate-400 hover:text-slate-100 transition-colors">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-opacity">
+          <div className="bg-slate-900 rounded-xl border border-slate-800 shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+            <div className="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900">
+              <div>
+                 <h3 className="font-semibold text-white text-lg">Details for {selectedPhone}</h3>
+                 <p className="text-slate-500 text-xs mt-0.5">Comprehensive analysis of number activity</p>
+              </div>
+              <button onClick={() => setSelectedPhone(null)} className="text-slate-400 hover:text-white transition-colors p-1 hover:bg-slate-800 rounded-lg">
                 <X size={20} />
               </button>
             </div>
             
-            <div className="flex-1 overflow-auto p-6 space-y-6">
+            <div className="flex-1 overflow-auto p-6 space-y-6 bg-slate-900/50">
               {/* Summary Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-slate-700/30 p-4 rounded-lg border border-slate-700 flex items-center gap-3">
-                  <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 flex items-center gap-4 shadow-sm">
+                  <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500">
                     <Activity size={24} />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400">Total Requests</p>
-                    <p className="text-xl font-bold text-slate-100">{stats.total}</p>
+                    <p className="text-sm font-medium text-slate-400">Total Requests</p>
+                    <p className="text-2xl font-bold text-white">{stats.total}</p>
                   </div>
                 </div>
-                <div className="bg-slate-700/30 p-4 rounded-lg border border-slate-700 flex items-center gap-3">
-                  <div className="p-2 bg-green-500/10 rounded-lg text-green-400">
+                <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 flex items-center gap-4 shadow-sm">
+                  <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-500">
                     <CheckCircle size={24} />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400">Success</p>
-                    <p className="text-xl font-bold text-slate-100">{stats.success}</p>
+                    <p className="text-sm font-medium text-slate-400">Success</p>
+                    <p className="text-2xl font-bold text-white">{stats.success}</p>
                   </div>
                 </div>
-                <div className="bg-slate-700/30 p-4 rounded-lg border border-slate-700 flex items-center gap-3">
-                  <div className="p-2 bg-red-500/10 rounded-lg text-red-400">
+                <div className="bg-slate-900 p-5 rounded-xl border border-slate-800 flex items-center gap-4 shadow-sm">
+                  <div className="p-3 bg-red-500/10 rounded-xl text-red-500">
                     <XCircle size={24} />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400">Failed</p>
-                    <p className="text-xl font-bold text-slate-100">{stats.failed}</p>
+                    <p className="text-sm font-medium text-slate-400">Failed</p>
+                    <p className="text-2xl font-bold text-white">{stats.failed}</p>
                   </div>
                 </div>
               </div>
@@ -283,8 +292,8 @@ export default function NumbersClient() {
               {/* Charts & Map */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Pie Chart */}
-                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col h-[300px] md:h-[400px]">
-                  <h4 className="text-sm font-medium text-slate-300 mb-4">Status Distribution</h4>
+                <div className="bg-slate-900 rounded-xl border border-slate-800 p-5 flex flex-col h-[350px] shadow-sm">
+                  <h4 className="text-sm font-semibold text-white mb-4">Status Distribution</h4>
                   <div className="flex-1 min-h-0">
                     {chartData.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
@@ -297,16 +306,17 @@ export default function NumbersClient() {
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
+                            stroke="none"
                           >
                             {chartData.map((_, index) => (
                               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                           </Pie>
                           <RechartsTooltip 
-                            contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f1f5f9' }}
-                            itemStyle={{ color: '#f1f5f9' }}
+                            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f8fafc', borderRadius: '0.5rem' }}
+                            itemStyle={{ color: '#e2e8f0' }}
                           />
-                          <Legend />
+                          <Legend verticalAlign="bottom" height={36} iconType="circle"/>
                         </PieChart>
                       </ResponsiveContainer>
                     ) : (
@@ -318,61 +328,61 @@ export default function NumbersClient() {
                 </div>
 
                 {/* Map */}
-                <div className="bg-slate-700/30 rounded-lg border border-slate-700 p-4 flex flex-col h-[300px] md:h-[400px]">
-                  <h4 className="text-sm font-medium text-slate-300 mb-4">Location History ({locations.length})</h4>
-                  <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-slate-600">
+                <div className="bg-slate-900 rounded-xl border border-slate-800 p-5 flex flex-col h-[350px] shadow-sm">
+                  <h4 className="text-sm font-semibold text-white mb-4">Location History ({locations.length})</h4>
+                  <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-slate-800 bg-slate-950">
                     <MapComponent locations={locations} highlightedJobId={highlightedJobId} />
                   </div>
                 </div>
               </div>
 
               {/* History Table */}
-              <div className="bg-slate-700/30 rounded-lg border border-slate-700 overflow-hidden">
-                <div className="p-4 border-b border-slate-700">
-                  <h4 className="font-medium text-slate-100">Request History</h4>
+              <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
+                <div className="p-5 border-b border-slate-800">
+                  <h4 className="font-semibold text-white">Request History</h4>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left text-slate-400">
-                    <thead className="text-xs text-slate-400 uppercase bg-slate-900/30">
+                    <thead className="text-xs text-slate-500 uppercase bg-slate-950/50 border-b border-slate-800">
                       <tr>
-                        <th className="px-4 py-3">Time</th>
-                        <th className="px-4 py-3">User</th>
-                        <th className="px-4 py-3">Status</th>
-                        <th className="px-4 py-3">Actions</th>
+                        <th className="px-5 py-3 font-medium">Time</th>
+                        <th className="px-5 py-3 font-medium">User</th>
+                        <th className="px-5 py-3 font-medium">Status</th>
+                        <th className="px-5 py-3 font-medium text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-slate-800">
                       {loadingJobs ? (
-                        <tr><td colSpan={4} className="text-center py-8">Loading jobs...</td></tr>
+                        <tr><td colSpan={4} className="text-center py-8 text-slate-500">Loading jobs...</td></tr>
                       ) : phoneJobs.length === 0 ? (
-                        <tr><td colSpan={4} className="text-center py-8">No history found</td></tr>
+                        <tr><td colSpan={4} className="text-center py-8 text-slate-500">No history found</td></tr>
                       ) : (
                         phoneJobs.map((job) => (
                           <tr 
                             key={job.id} 
-                            className={`border-b border-slate-700/50 hover:bg-slate-700/50 cursor-pointer ${highlightedJobId === job.id ? 'bg-blue-500/10' : ''}`}
+                            className={`hover:bg-slate-800/50 cursor-pointer transition-colors ${highlightedJobId === job.id ? 'bg-blue-500/10' : ''}`}
                             onClick={() => setHighlightedJobId(job.id)}
                           >
-                            <td className="px-4 py-3 text-slate-300">
+                            <td className="px-5 py-3.5 text-slate-300">
                               {new Date(job.created_at).toLocaleString()}
                             </td>
-                            <td className="px-4 py-3 text-slate-300">{job.username}</td>
-                            <td className="px-4 py-3">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                job.status === 'success' || job.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                                job.status === 'failed' ? 'bg-red-500/10 text-red-500' :
-                                'bg-slate-700 text-slate-300'
+                            <td className="px-5 py-3.5 text-slate-300 font-medium">{job.username}</td>
+                            <td className="px-5 py-3.5">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                job.status === 'success' || job.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
+                                job.status === 'failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                                'bg-slate-800 text-slate-400 border border-slate-700'
                               }`}>
                                 {job.status}
                               </span>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-5 py-3.5 text-right">
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setSelectedJob(job);
                                 }}
-                                className="px-3 py-1.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded-lg text-xs font-medium transition-colors"
+                                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium transition-colors border border-slate-700"
                               >
                                 View Result
                               </button>
@@ -391,17 +401,17 @@ export default function NumbersClient() {
 
       {/* Job Result Modal */}
       {selectedJob && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900/50">
-              <h3 className="font-semibold text-slate-100">Job Result</h3>
-              <button onClick={() => setSelectedJob(null)} className="text-slate-400 hover:text-slate-100 transition-colors">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="bg-slate-900 rounded-xl border border-slate-800 shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+            <div className="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900">
+              <h3 className="font-semibold text-white">Job Result</h3>
+              <button onClick={() => setSelectedJob(null)} className="text-slate-400 hover:text-white transition-colors p-1 hover:bg-slate-800 rounded-lg">
                 <X size={20} />
               </button>
             </div>
-            <div className="p-6 overflow-y-auto">
-              <div className="bg-slate-950 rounded-lg border border-slate-800 p-4 overflow-x-auto">
-                <pre className="text-xs text-green-400 font-mono">
+            <div className="p-6 overflow-y-auto bg-slate-900/50">
+              <div className="bg-slate-950 rounded-lg border border-slate-800 p-4 overflow-x-auto shadow-inner">
+                <pre className="text-xs text-emerald-400 font-mono leading-relaxed">
                   {(() => {
                     try {
                       const parsed = JSON.parse(selectedJob.result);

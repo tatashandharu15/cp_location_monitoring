@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "Read-only admin dashboard",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -26,17 +29,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-slate-200`}
       >
-        <header className="border-b border-slate-700 bg-slate-900">
-          <nav className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-6">
-            <Link href="/dashboard" className="text-slate-100 hover:text-white">Dashboard</Link>
-            <Link href="/numbers" className="text-slate-100 hover:text-white">Numbers</Link>
-            <span className="ml-auto text-xs px-2 py-1 rounded-full bg-slate-700 text-slate-100">Read Only</span>
-          </nav>
-        </header>
-        <div className="mx-auto max-w-6xl px-4">
-          {children}
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className="flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300">
+            {/* Top Bar for Mobile Padding / Spacer if needed, managed by Sidebar fixed pos */}
+            <div className="md:hidden h-16" /> 
+            
+            <div className="container mx-auto px-4 py-6 md:px-8 md:py-8 max-w-7xl">
+              {children}
+            </div>
+          </main>
         </div>
       </body>
     </html>
